@@ -23,6 +23,9 @@ const JUMP_VELOCITY = -600.0
 
 #var health: int = 100
 
+func _init() -> void:
+	GameManager.health = 100
+
 func shoot():
 	var instance = projectile.instantiate()
 	if attack_sprite.flip_h:
@@ -68,7 +71,7 @@ func _physics_process(delta: float) -> void:
 func attack():
 	audio_player.stream = slash_sound
 	audio_player.play()
-	animation_player.play("attack")
+	animation_player.play("Attack")
 	
 func attacked():
 	audio_player.stream = hurt_sound

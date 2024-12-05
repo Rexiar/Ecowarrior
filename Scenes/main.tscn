@@ -1,0 +1,36 @@
+[gd_scene load_steps=9 format=3 uid="uid://caskoptejp17m"]
+
+[ext_resource type="Script" path="res://Script/master.gd" id="1_spl2o"]
+[ext_resource type="PackedScene" uid="uid://0wpoq0nvpqsj" path="res://Scenes/death_scene.tscn" id="2_6ld87"]
+[ext_resource type="PackedScene" uid="uid://civpqrug0x287" path="res://Scenes/spawner_manager.tscn" id="2_wmtg2"]
+[ext_resource type="PackedScene" uid="uid://cace83i3mp6g" path="res://Scenes/player.tscn" id="3_aclmm"]
+[ext_resource type="PackedScene" uid="uid://bwhkg25ykffil" path="res://Scenes/end_screen.tscn" id="4_mlor1"]
+[ext_resource type="PackedScene" uid="uid://blqmqbr7d1pg0" path="res://Scenes/background.tscn" id="5_07gue"]
+[ext_resource type="PackedScene" uid="uid://brvgrox47gflx" path="res://Scenes/level.tscn" id="6_0xekb"]
+[ext_resource type="PackedScene" uid="uid://bmhlj26iboyx7" path="res://Scenes/camera.tscn" id="7_er74j"]
+
+[node name="main" type="Node2D" node_paths=PackedStringArray("camera", "spawner_manager")]
+script = ExtResource("1_spl2o")
+death_scene = ExtResource("2_6ld87")
+player_scene = ExtResource("3_aclmm")
+end_screen = ExtResource("4_mlor1")
+camera = NodePath("Camera")
+spawner_manager = NodePath("SpawnerManager")
+
+[node name="Background" parent="." instance=ExtResource("5_07gue")]
+position = Vector2(0, 212)
+scale = Vector2(4, 4)
+
+[node name="SpawnerManager" parent="." node_paths=PackedStringArray("boundary_top_left", "boundary_bottom_right") instance=ExtResource("2_wmtg2")]
+boundary_top_left = NodePath("TopLeft")
+boundary_bottom_right = NodePath("BottomRight")
+
+[node name="TopLeft" type="Node2D" parent="SpawnerManager"]
+
+[node name="BottomRight" type="Node2D" parent="SpawnerManager"]
+position = Vector2(1946, 596)
+
+[node name="TileMapLayer" parent="." instance=ExtResource("6_0xekb")]
+
+[node name="Camera" parent="." instance=ExtResource("7_er74j")]
+position = Vector2(852, 549)

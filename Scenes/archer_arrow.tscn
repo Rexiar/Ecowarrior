@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://jshwrihoifgi"]
+
+[ext_resource type="Script" path="res://Script/archer_arrow.gd" id="1_rr3na"]
+[ext_resource type="Texture2D" uid="uid://d6uwf1e21bjn" path="res://Asset/Sprites/Projectile.png" id="2_bvohy"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_s0owi"]
+radius = 12.0
+
+[node name="ArcherArrow" type="CharacterBody2D"]
+collision_layer = 512
+collision_mask = 512
+script = ExtResource("1_rr3na")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_s0owi")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_bvohy")

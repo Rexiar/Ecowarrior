@@ -1,0 +1,99 @@
+[gd_scene load_steps=7 format=3 uid="uid://byj4gxk3gfk3n"]
+
+[ext_resource type="PackedScene" uid="uid://blqmqbr7d1pg0" path="res://Scenes/background.tscn" id="1_alhyt"]
+[ext_resource type="Script" path="res://Script/menu.gd" id="1_ywpk0"]
+[ext_resource type="PackedScene" uid="uid://caskoptejp17m" path="res://Scenes/main.tscn" id="2_a51rs"]
+[ext_resource type="PackedScene" uid="uid://brvgrox47gflx" path="res://Scenes/level.tscn" id="2_mcw24"]
+[ext_resource type="PackedScene" uid="uid://civpqrug0x287" path="res://Scenes/spawner_manager.tscn" id="6_lwd32"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_lhvds"]
+load_path = "res://.godot/imported/LOGO.png-d2a1beb645efd8de771a05acc7781ee5.ctex"
+
+[node name="Menu" type="Node"]
+
+[node name="Background" parent="." instance=ExtResource("1_alhyt")]
+position = Vector2(0, 212)
+scale = Vector2(4, 4)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ywpk0")
+level = ExtResource("2_a51rs")
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+layout_mode = 0
+offset_left = -115.0
+offset_top = -251.0
+offset_right = 965.0
+offset_bottom = 829.0
+scale = Vector2(0.2, 0.2)
+texture = SubResource("CompressedTexture2D_lhvds")
+
+[node name="Label" type="Label" parent="Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -131.0
+offset_top = -175.0
+offset_right = 131.0
+offset_bottom = -106.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 50
+text = "Ecowarrior"
+
+[node name="PlayButton" type="Button" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -34.0
+offset_top = -25.0
+offset_right = 34.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 30
+text = "Play"
+
+[node name="ExitButton" type="Button" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -30.0
+offset_top = 93.0
+offset_right = 31.0
+offset_bottom = 143.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 30
+text = "Exit"
+
+[node name="TileMapLayer" parent="." instance=ExtResource("2_mcw24")]
+position = Vector2(-698, -369)
+
+[node name="SpawnerManager" parent="." node_paths=PackedStringArray("boundary_top_left", "boundary_bottom_right") instance=ExtResource("6_lwd32")]
+boundary_top_left = NodePath("../TopLeft")
+boundary_bottom_right = NodePath("../BottomRight")
+
+[node name="TopLeft" type="Node2D" parent="."]
+position = Vector2(-309, -8)
+
+[node name="BottomRight" type="Node2D" parent="."]
+position = Vector2(1620, 569)
+
+[connection signal="pressed" from="Control/PlayButton" to="Control" method="_on_play_button_pressed"]
+[connection signal="pressed" from="Control/ExitButton" to="Control" method="_on_exit_button_pressed"]

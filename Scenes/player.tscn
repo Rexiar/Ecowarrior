@@ -1,0 +1,175 @@
+[gd_scene load_steps=21 format=3 uid="uid://cace83i3mp6g"]
+
+[ext_resource type="Script" path="res://Script/player.gd" id="1_inquv"]
+[ext_resource type="AudioStream" uid="uid://1s1vetm3rqov" path="res://Asset/Sounds/Slash.wav" id="2_djafx"]
+[ext_resource type="Texture2D" uid="uid://bd47djour1qad" path="res://Asset/Sprites/94.png" id="2_wlws3"]
+[ext_resource type="AudioStream" uid="uid://can2rv11x0ep5" path="res://Asset/Sounds/hurt2.wav" id="3_cxy8v"]
+[ext_resource type="Texture2D" uid="uid://doxmwtk7tcuma" path="res://Asset/Sprites/Attack/File1.png" id="3_r21yj"]
+[ext_resource type="Texture2D" uid="uid://by0e8uk1ngwvx" path="res://Asset/Sprites/Attack/File2.png" id="4_15vo7"]
+[ext_resource type="Texture2D" uid="uid://d3qpv2g72wo0t" path="res://Asset/Sprites/Attack/File3.png" id="5_7j6in"]
+[ext_resource type="Texture2D" uid="uid://c728vgtkshnmm" path="res://Asset/Sprites/Attack/File4.png" id="6_p3kf8"]
+[ext_resource type="Texture2D" uid="uid://bbp4li11i6wj0" path="res://Asset/Sprites/Attack/File5.png" id="7_htcm7"]
+[ext_resource type="Texture2D" uid="uid://bowm6tj0njc1e" path="res://Asset/Sprites/Attack/File6.png" id="8_6htyw"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="9_4hicm"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="10_pbjck"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="11_l70h0"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="12_g7sg2"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3ne7r"]
+radius = 25.0
+height = 116.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_v46ue"]
+radius = 26.0
+height = 116.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7o2ge"]
+
+[sub_resource type="Animation" id="Animation_penqh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Attack:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [null]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AttackArea:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_gylul"]
+resource_name = "attack"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Attack:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.166667, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("3_r21yj"), ExtResource("4_15vo7"), ExtResource("5_7j6in"), ExtResource("6_p3kf8"), ExtResource("7_htcm7"), ExtResource("8_6htyw"), null]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AttackArea:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6tffr"]
+_data = {
+"RESET": SubResource("Animation_penqh"),
+"attack": SubResource("Animation_gylul")
+}
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("audio_player", "attack_area", "area", "state_chart") groups=["Player"]]
+scale = Vector2(0.5, 0.5)
+collision_layer = 513
+collision_mask = 513
+script = ExtResource("1_inquv")
+slash_sound = ExtResource("2_djafx")
+hurt_sound = ExtResource("3_cxy8v")
+audio_player = NodePath("Audio2D")
+attack_area = NodePath("AttackArea")
+area = NodePath("Area")
+state_chart = NodePath("StateChart")
+
+[node name="Area" type="Area2D" parent="."]
+position = Vector2(-3, 2)
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area"]
+shape = SubResource("CapsuleShape2D_3ne7r")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-3, 2)
+shape = SubResource("CapsuleShape2D_v46ue")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+texture_filter = 1
+scale = Vector2(2.04688, 2.04688)
+texture = ExtResource("2_wlws3")
+
+[node name="Attack" type="Sprite2D" parent="."]
+scale = Vector2(0.4, 0.4)
+
+[node name="AttackArea" type="Area2D" parent="."]
+position = Vector2(24, -1)
+collision_mask = 5
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+shape = SubResource("CapsuleShape2D_7o2ge")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_6tffr")
+}
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("9_4hicm")
+
+[node name="Condition" type="Node" parent="StateChart"]
+script = ExtResource("10_pbjck")
+initial_state = NodePath("Normal")
+
+[node name="Normal" type="Node" parent="StateChart/Condition"]
+script = ExtResource("11_l70h0")
+
+[node name="ToDamaged" type="Node" parent="StateChart/Condition/Normal"]
+script = ExtResource("12_g7sg2")
+to = NodePath("../../Damaged")
+event = &"Damaged"
+delay_in_seconds = "0.0"
+
+[node name="Dead" type="Node" parent="StateChart/Condition"]
+script = ExtResource("11_l70h0")
+
+[node name="Damaged" type="Node" parent="StateChart/Condition"]
+script = ExtResource("11_l70h0")
+
+[node name="ToNormal" type="Node" parent="StateChart/Condition/Damaged"]
+script = ExtResource("12_g7sg2")
+to = NodePath("../../Normal")
+event = &"Normal"
+delay_in_seconds = "0.0"
+
+[node name="ToDead" type="Node" parent="StateChart/Condition/Damaged"]
+script = ExtResource("12_g7sg2")
+to = NodePath("../../Dead")
+event = &"Dead"
+delay_in_seconds = "0.0"
+
+[node name="Audio2D" type="AudioStreamPlayer2D" parent="."]
+
+[connection signal="body_entered" from="AttackArea" to="." method="_on_attack_area_body_entered"]
+[connection signal="state_entered" from="StateChart/Condition/Normal" to="." method="_on_normal_state_entered"]
+[connection signal="state_entered" from="StateChart/Condition/Dead" to="." method="_on_dead_state_entered"]
+[connection signal="state_entered" from="StateChart/Condition/Damaged" to="." method="_on_damaged_state_entered"]
